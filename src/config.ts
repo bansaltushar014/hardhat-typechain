@@ -7,7 +7,7 @@ export function getDefaultTypechainConfig(
 ): TypechainConfig {
   const defaultConfig: TypechainConfig = {
     outDir: "typechain",
-    target: "ethers-v4",
+    target: "ethers-v5",
   };
 
   return { ...defaultConfig, ...config.typechain };
