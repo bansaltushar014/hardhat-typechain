@@ -1,6 +1,6 @@
 [![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
 
-Just added ethers-v5 support
+Just added ethers-v5 support and removed some peer dependencies.
 
 # buidler-typechain
 
