@@ -15,7 +15,7 @@ task(
   "Generate Typechain typings for compiled contracts"
 ).setAction(async ({}, { config, run }) => {
   const typechain = getDefaultTypechainConfig(config);
-  const typechainTargets = ["ethers-v4", "truffle", "web3-v1"];
+  const typechainTargets = ["ethers-v4", "truffle", "web3-v1", "ethers-v5"];
   if (!typechainTargets.includes(typechain.target as string)) {
     throw new BuidlerPluginError(
       "Invalid Typechain target, please provide via buidler.config.js (typechain.target)"
