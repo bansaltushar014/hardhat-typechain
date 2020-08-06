@@ -21,7 +21,7 @@ npm i buidler-typechain typechain ts-generator @typechain/ethers-v4 @typechain/e
 And add the following statement to your `buidler.config.js`:
 
 ```js
-usePlugin("buidler-typechain");
+usePlugin("@blockchangers/buidler-typechain");
 ```
 
 ## Tasks
@@ -42,7 +42,7 @@ This is an example of how to set it:
 module.exports = {
   typechain: {
     outDir: "src/types",
-    target: "ethers-v4",
+    target: "ethers-v5",
   },
 };
 ```
