@@ -57,9 +57,10 @@ task(
   async (args, { config, run }, runSuper) => {
     const typechain = getDefaultTypechainConfig(config);
     if (typechain.onCompile) {
-      await run("typechain", { noCompile: false }); // compile -> generate types
+      await runSuper(args);                          // compile
+      await run("typechain", { noCompile: true });   // generate types
     } else {
-      await runSuper(args); // default compile
+      await runSuper(); // default compile
     }
   }
 );
