@@ -1,10 +1,8 @@
 [![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
 
-Just added ethers-v5 support and removed some peer dependencies.
-
 # buidler-typechain
 
-_Updated for TypeChain v2!_
+_Better integration with buidler builtin tasks!_
 
 Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your Buidler project!
 
