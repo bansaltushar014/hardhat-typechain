@@ -1,9 +1,9 @@
 {
-  "name": "@blockchangers/buidler-typechain",
+  "name": "@unipeer/buidler-typechain",
   "version": "0.1.5",
   "description": "Buidler TypeScript plugin boilerplate",
-  "repository": "https://github.com/blockchangers/buidler-typechain",
-  "author": "Rahul Sethuram",
+  "repository": "https://github.com/unipeer/buidler-typechain",
+  "author": "Rahul Sethuram, Shaleen Jain",
   "license": "MIT",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
