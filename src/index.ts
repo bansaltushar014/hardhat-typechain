@@ -47,9 +47,8 @@ task(
 task(
   TASK_CLEAN,
   "Clears the cache and deletes all artifacts",
-  async (_, { config }) => {
-    await fsExtra.remove(config.paths.cache);
-    await fsExtra.remove(config.paths.artifacts);
+  async (args, { config }, runSuper) => {
+    await runSuper(args);
     if (config.typechain && config.typechain.outDir) {
       await fsExtra.remove(config.typechain.outDir);
     }
