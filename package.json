@@ -1,6 +1,6 @@
 {
   "name": "@unipeer/buidler-typechain",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Buidler TypeScript plugin boilerplate",
   "repository": "https://github.com/unipeer/buidler-typechain",
   "author": "Rahul Sethuram, Shaleen Jain",
