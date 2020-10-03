@@ -36,6 +36,11 @@ Generate Typechain typings for compiled contracts
 
 This plugin extends the `BuidlerConfig` optional `typechain` object. The object contains two fields, `outDir` and `target`. `outDir` is the output directory of the artifacts that TypeChain creates (defaults to `typechain`). `target` is one of the targets specified by the TypeChain [docs](https://github.com/ethereum-ts/TypeChain#cli) (defaults to `ethers`).
 
+You can also configure this plugin to automatically run after ever `compile` or `test` command
+by setting the `onTest` or `onCompile` fields to true. `onTest` is by default set to true
+and is recommended to avoid any frustrations in case where you forget to re-generate types
+after updating a contract and your tests are out of sync with your contract code.
+
 This is an example of how to set it:
 
 ```js
@@ -43,6 +48,8 @@ module.exports = {
   typechain: {
     outDir: "src/types",
     target: "ethers-v5",
+    onTest: true,
+    onCompile: false
   },
 };
 ```
