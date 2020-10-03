@@ -15,13 +15,13 @@ Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your Buid
 ## Installation
 
 ```bash
-npm i buidler-typechain typechain ts-generator @typechain/ethers-v4 @typechain/ethers-v5 @typechain/truffle-v5 @typechain/web3-v1 @typechain/truffle-v4
+npm i @unipeer/buidler-typechain typechain ts-generator
 ```
 
 And add the following statement to your `buidler.config.js`:
 
 ```js
-usePlugin("@blockchangers/buidler-typechain");
+usePlugin("@unipeer/buidler-typechain");
 ```
 
 ## Tasks
@@ -115,4 +115,4 @@ See this [starter kit](https://github.com/rhlsthrm/typescript-solidity-dev-start
 ## TypeScript support
 
 You need to add this to your `tsconfig.json`'s `files` array:
-`"node_modules/buidler-typechain/src/type-extensions.d.ts"`
+`"node_modules/@unipeer/buidler-typechain/src/type-extensions.d.ts"`
