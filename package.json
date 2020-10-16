@@ -57,7 +57,6 @@
   },
   "peerDependencies": {
     "@nomiclabs/buidler": "^1.4.4",
-    "ts-generator": "0.0.8",
-    "typechain": "^2.0.0"
+    "typechain": "^3.0.0"
   }
 }
