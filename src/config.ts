@@ -1,11 +1,10 @@
 import { HardhatConfig } from "hardhat/types/config";
 
+import "./type-extensions";
 import { TypechainConfig } from "./types";
 
-import "./type-extensions";
-
 export function getDefaultTypechainConfig(
-  config: HardhatConfig 
+  config: HardhatConfig
 ): TypechainConfig {
   const defaultConfig: TypechainConfig = {
     outDir: "typechain",
