@@ -36,7 +36,7 @@ task("typechain", "Generate Typechain typings for compiled contracts")
       new TypeChain({
         cwd,
         rawConfig: {
-          files: `${config.paths.artifacts}/*.json`,
+          files: `${config.paths.artifacts}/!(build-info)/*/!(*.dbg).json`,
           outDir: typechain.outDir,
           target: typechain.target as string,
         },

@@ -50,7 +50,7 @@ This is an example of how to set it:
 ```js
 module.exports = {
   typechain: {
-    outDir: "src/types",
+    outDir: "types",
     target: "ethers-v5",
     onTest: true,
     onCompile: false
@@ -65,13 +65,13 @@ module.exports = {
 Example Waffle + Ethers test that uses typedefs for contracts:
 
 ```ts
-import { ethers } from "@nomiclabs/hardhat";
+import { ethers } from "hardhat";
 import chai from "chai";
 import { Wallet } from "ethers";
 import { deployContract, solidity } from "ethereum-waffle";
 
 import CounterArtifact from "../artifacts/Counter.json";
-import { Counter } from "../typechain/Counter";
+import { Counter } from "../types/Counter";
 
 chai.use(solidity);
 const { expect } = chai;
