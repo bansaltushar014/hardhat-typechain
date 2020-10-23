@@ -4,19 +4,50 @@ import {
   TASK_COMPILE,
   TASK_TEST,
 } from "hardhat/builtin-tasks/task-names";
-import { task } from "hardhat/config";
+
+import { extendConfig, task } from "hardhat/config";
+import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
+
 import { HardhatPluginError } from "hardhat/plugins";
 import { tsGenerator } from "ts-generator";
 import { TypeChain } from "typechain/dist/TypeChain";
 
-import { getDefaultTypechainConfig } from "./config";
+// This import is needed to let the TypeScript compiler know that it should include your type
+// extensions in your npm package's types file.
+import "./type-extensions";
+
+extendConfig(
+  (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
+    // We apply our default config here. Any other kind of config resolution
+    // or normalization should be placed here.
+    //
+    // `config` is the resolved config, which will be used during runtime and
+    // you should modify.
+    // `userConfig` is the config as provided by the user. You should not modify
+    // it.
+    //
+    // If you extended the `HardhatConfig` type, you need to make sure that
+    // executing this function ensures that the `config` object is in a valid
+    // state for its type, including its extentions. For example, you may
+    // need to apply a default value, like in this example.
+
+    const outDir = userConfig.typechain?.outDir;
+    const target = userConfig.typechain?.target;
+    const onCompile = userConfig.typechain?.onCompile;
+    const onTest = userConfig.typechain?.onTest;
+
+    config.typechain.outDir = outDir ? outDir : "typechain";
+    config.typechain.target = target ? target : "ethers-v5";
+    config.typechain.onCompile = onCompile ? onCompile : false;
+    config.typechain.onTest = onTest ? onTest : true;
+  }
+);
 
 task("typechain", "Generate Typechain typings for compiled contracts")
   .addFlag("noCompile", "Don't compile before running this task")
   .setAction(async ({ noCompile }, { config, run }) => {
-    const typechain = getDefaultTypechainConfig(config);
     const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
-    if (!typechainTargets.includes(typechain.target as string)) {
+    if (!typechainTargets.includes(config.typechain.target)) {
       throw new HardhatPluginError(
         "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
       );
@@ -27,7 +58,7 @@ task("typechain", "Generate Typechain typings for compiled contracts")
     }
 
     console.log(
-      `Creating Typechain artifacts in directory ${typechain.outDir} for target ${typechain.target}`
+      `Creating Typechain artifacts in directory ${config.typechain.outDir} for target ${config.typechain.target}`
     );
 
     const cwd = process.cwd();
@@ -36,9 +67,9 @@ task("typechain", "Generate Typechain typings for compiled contracts")
       new TypeChain({
         cwd,
         rawConfig: {
-          files: `${config.paths.artifacts}/!(build-info)/*/!(*.dbg).json`,
-          outDir: typechain.outDir,
-          target: typechain.target as string,
+          files: `${config.paths.artifacts}/!(build-info)/**/+([a-zA-Z0-9]).json`,
+          outDir: config.typechain.outDir,
+          target: config.typechain.target as string,
         },
       })
     );
@@ -55,7 +86,7 @@ task(
   TASK_COMPILE,
   "Compiles the entire project, building all artifacts"
 ).setAction(async (args, { config, run }, runSuper) => {
-  const typechain = getDefaultTypechainConfig(config);
+  const typechain = config.typechain;
   if (typechain.onCompile) {
     await runSuper(args); // compile
     await run("typechain", { noCompile: true }); // generate types
@@ -71,7 +102,7 @@ task(
  */
 task(TASK_TEST, "Runs mocha tests").setAction(
   async (args, { config, run }, runSuper) => {
-    const typechain = getDefaultTypechainConfig(config);
+    const typechain = config.typechain;
     if (typechain.onTest) {
       await run("typechain", { noCompile: false }); // compile -> generate types
       await runSuper({ noCompile: true, ...args }); // test without compiling

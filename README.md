@@ -1,4 +1,4 @@
-[![hardhat](https://hardhat.dev/hardhat-plugin-badge.svg?1)](https://hardhat.dev)
+[![hardhat](https://hardhat.org/hardhat-plugin-badge.svg?1)](https://hardhat.org)
 
 # hardhat-typechain
 
