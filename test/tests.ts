@@ -6,7 +6,7 @@ import { useEnvironment } from "./helpers";
 describe("Integration tests examples", function () {
   describe("Happy case", function () {
     this.timeout(120_000);
-    useEnvironment(__dirname + "/buidler-project");
+    useEnvironment(__dirname + "/hardhat-project");
 
     beforeEach(async function () {
       await this.env.run("clean");

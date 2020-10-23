@@ -60,6 +60,6 @@ typings/
 .next
 
 # test files
-test/buidler-project/artifacts-dir/
-test/buidler-project/cache/
+test/hardhat-project/artifacts-dir/
+test/hardhat-project/cache/
 testdir/

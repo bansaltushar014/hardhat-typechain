@@ -1,11 +1,11 @@
+import fsExtra from "fs-extra";
 import {
-  TASK_TEST,
   TASK_CLEAN,
   TASK_COMPILE,
-} from "@nomiclabs/buidler/builtin-tasks/task-names";
-import { task } from "@nomiclabs/buidler/config";
-import { BuidlerPluginError } from "@nomiclabs/buidler/plugins";
-import fsExtra from "fs-extra";
+  TASK_TEST,
+} from "hardhat/builtin-tasks/task-names";
+import { task } from "hardhat/config";
+import { HardhatPluginError } from "hardhat/plugins";
 import { tsGenerator } from "ts-generator";
 import { TypeChain } from "typechain/dist/TypeChain";
 
@@ -15,10 +15,10 @@ task("typechain", "Generate Typechain typings for compiled contracts")
   .addFlag("noCompile", "Don't compile before running this task")
   .setAction(async ({ noCompile }, { config, run }) => {
     const typechain = getDefaultTypechainConfig(config);
-    const typechainTargets = ["ethers-v4", "truffle", "web3-v1", "ethers-v5"];
+    const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
     if (!typechainTargets.includes(typechain.target as string)) {
-      throw new BuidlerPluginError(
-        "Invalid Typechain target, please provide via buidler.config.js (typechain.target)"
+      throw new HardhatPluginError(
+        "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
       );
     }
 
@@ -53,26 +53,23 @@ task("typechain", "Generate Typechain typings for compiled contracts")
  */
 task(
   TASK_COMPILE,
-  "Compiles the entire project, building all artifacts").setAction(
-  async (args, { config, run }, runSuper) => {
-    const typechain = getDefaultTypechainConfig(config);
-    if (typechain.onCompile) {
-      await runSuper(args);                          // compile
-      await run("typechain", { noCompile: true });   // generate types
-    } else {
-      await runSuper(); // default compile
-    }
+  "Compiles the entire project, building all artifacts"
+).setAction(async (args, { config, run }, runSuper) => {
+  const typechain = getDefaultTypechainConfig(config);
+  if (typechain.onCompile) {
+    await runSuper(args); // compile
+    await run("typechain", { noCompile: true }); // generate types
+  } else {
+    await runSuper(); // default compile
   }
-);
+});
 
 /**
  * Override the test task if configured to
  * generate types before every test run.
  *
  */
-task(
-  TASK_TEST,
-  "Runs mocha tests").setAction(
+task(TASK_TEST, "Runs mocha tests").setAction(
   async (args, { config, run }, runSuper) => {
     const typechain = getDefaultTypechainConfig(config);
     if (typechain.onTest) {

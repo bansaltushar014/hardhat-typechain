@@ -1,15 +1,17 @@
-import { ResolvedBuidlerConfig } from "@nomiclabs/buidler/types";
+import { HardhatConfig } from "hardhat/types/config";
 
 import { TypechainConfig } from "./types";
 
+import "./type-extensions";
+
 export function getDefaultTypechainConfig(
-  config: ResolvedBuidlerConfig
+  config: HardhatConfig 
 ): TypechainConfig {
   const defaultConfig: TypechainConfig = {
     outDir: "typechain",
     target: "ethers-v5",
     onTest: true,
-    onCompile: false
+    onCompile: false,
   };
 
   return { ...defaultConfig, ...config.typechain };

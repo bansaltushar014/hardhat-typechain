@@ -1,10 +1,10 @@
-[![buidler](https://buidler.dev/buidler-plugin-badge.svg?1)](https://buidler.dev)
+[![hardhat](https://hardhat.dev/hardhat-plugin-badge.svg?1)](https://hardhat.dev)
 
-# buidler-typechain
+# hardhat-typechain
 
-_Better integration with buidler builtin tasks!_
+_Better integration with hardhat builtin tasks!_
 
-Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your Buidler project!
+Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your hardhat project!
 
 ## What
 
@@ -13,18 +13,24 @@ Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your Buid
 ## Installation
 
 ```bash
-npm i @unipeer/buidler-typechain typechain ts-generator
+npm i @unipeer/hardhat-typechain typechain ts-generator
 ```
 
-And add the following statement to your `buidler.config.js`:
+And add the following statement to your `hardhat.config.js`:
 
 ```js
-usePlugin("@unipeer/buidler-typechain");
+require("@unipeer/hardhat-typechain");
+```
+
+or 
+
+```typescript
+import "@unipeer/hardhat-typechain";
 ```
 
 ## Tasks
 
-This plugin adds the _typechain_ task to Buidler:
+This plugin adds the _typechain_ task to hardhat:
 
 ```
 Generate Typechain typings for compiled contracts
@@ -32,7 +38,7 @@ Generate Typechain typings for compiled contracts
 
 ## Configuration
 
-This plugin extends the `BuidlerConfig` optional `typechain` object. The object contains two fields, `outDir` and `target`. `outDir` is the output directory of the artifacts that TypeChain creates (defaults to `typechain`). `target` is one of the targets specified by the TypeChain [docs](https://github.com/ethereum-ts/TypeChain#cli) (defaults to `ethers`).
+This plugin extends the `hardhatConfig` optional `typechain` object. The object contains two fields, `outDir` and `target`. `outDir` is the output directory of the artifacts that TypeChain creates (defaults to `typechain`). `target` is one of the targets specified by the TypeChain [docs](https://github.com/ethereum-ts/TypeChain#cli) (defaults to `ethers`).
 
 You can also configure this plugin to automatically run after ever `compile` or `test` command
 by setting the `onTest` or `onCompile` fields to true. `onTest` is by default set to true
@@ -54,12 +60,12 @@ module.exports = {
 
 ## Usage
 
-`npx buidler typechain` - Compiles and generates Typescript typings for your contracts.
+`npx hardhat typechain` - Compiles and generates Typescript typings for your contracts.
 
 Example Waffle + Ethers test that uses typedefs for contracts:
 
 ```ts
-import { ethers } from "@nomiclabs/buidler";
+import { ethers } from "@nomiclabs/hardhat";
 import chai from "chai";
 import { Wallet } from "ethers";
 import { deployContract, solidity } from "ethereum-waffle";
@@ -116,8 +122,3 @@ describe("Counter", () => {
 ```
 
 See this [starter kit](https://github.com/rhlsthrm/typescript-solidity-dev-starter-kit) for a full example!
-
-## TypeScript support
-
-You need to add this to your `tsconfig.json`'s `files` array:
-`"node_modules/@unipeer/buidler-typechain/src/type-extensions.d.ts"`
