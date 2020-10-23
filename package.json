@@ -13,6 +13,9 @@
     "hardhat",
     "hardhat-plugin"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint:fix": "prettier --write 'src/**/*.{js,ts}' 'test/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
     "lint": "tslint --config tslint.json --project tsconfig.json",
