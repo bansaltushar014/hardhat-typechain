@@ -4,11 +4,9 @@ import {
   TASK_COMPILE,
   TASK_TEST,
 } from "hardhat/builtin-tasks/task-names";
-
 import { extendConfig, task } from "hardhat/config";
-import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-
 import { HardhatPluginError } from "hardhat/plugins";
+import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { tsGenerator } from "ts-generator";
 import { TypeChain } from "typechain/dist/TypeChain";
 
