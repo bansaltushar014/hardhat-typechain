@@ -1,7 +1,9 @@
-// We load the plugin here.
-require(__dirname + "/../../src/index");
+import { HardhatUserConfig } from "hardhat/types";
 
-module.exports = {
+// We load the plugin here.
+import "../../src/index";
+
+const config: HardhatUserConfig = {
   solidity: {
     version: "0.6.8",
   },
@@ -15,3 +17,5 @@ module.exports = {
     onCompile: true,
   },
 };
+
+export default config;
