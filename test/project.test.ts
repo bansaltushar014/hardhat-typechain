@@ -14,7 +14,7 @@ describe("Integration tests examples", function () {
 
     it("Compiles and generates Typechain artifacts", async function () {
       try {
-        await this.hre.run("typechain");
+        await this.hre.run("compile");
         assert.isTrue(true);
       } catch (error) {
         assert.fail(error.message);

@@ -13,8 +13,7 @@ const config: HardhatUserConfig = {
   typechain: {
     outDir: "../../testdir",
     target: "ethers-v5",
-    onTest: true,
-    onCompile: true,
+    runOnCompile: true,
   },
 };
 

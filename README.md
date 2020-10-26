@@ -22,7 +22,7 @@ And add the following statement to your `hardhat.config.js`:
 require("@unipeer/hardhat-typechain");
 ```
 
-or 
+or for typescript:
 
 ```typescript
 import "@unipeer/hardhat-typechain";
@@ -40,20 +40,19 @@ Generate Typechain typings for compiled contracts
 
 This plugin extends the `hardhatConfig` optional `typechain` object. The object contains two fields, `outDir` and `target`. `outDir` is the output directory of the artifacts that TypeChain creates (defaults to `typechain`). `target` is one of the targets specified by the TypeChain [docs](https://github.com/ethereum-ts/TypeChain#cli) (defaults to `ethers`).
 
-You can also configure this plugin to automatically run after ever `compile` or `test` command
-by setting the `onTest` or `onCompile` fields to true. `onTest` is by default set to true
+You can also configure this plugin to automatically run after every `compile` command
+by setting the `runOnCompile` field to true. `runOnCompile` is true by default
 and is recommended to avoid any frustrations in case where you forget to re-generate types
 after updating a contract and your tests are out of sync with your contract code.
 
-This is an example of how to set it:
+These are the default configs that you can change:
 
 ```js
 module.exports = {
   typechain: {
     outDir: "types",
     target: "ethers-v5",
-    onTest: true,
-    onCompile: false
+    runOnCompile: true
   },
 };
 ```
