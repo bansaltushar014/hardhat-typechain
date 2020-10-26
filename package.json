@@ -1,6 +1,6 @@
 {
   "name": "@unipeer/hardhat-typechain",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "hardhat TypeScript plugin boilerplate",
   "repository": "https://github.com/unipeer/hardhat-typechain",
   "author": "Rahul Sethuram, Shaleen Jain",
