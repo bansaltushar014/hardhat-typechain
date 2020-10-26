@@ -7,16 +7,16 @@ import {
   TASK_COMPILE_SOLIDITY_LOG_COMPILATION_RESULT,
   TASK_TEST,
 } from "hardhat/builtin-tasks/task-names";
-import { extendConfig, task, subtask, types } from "hardhat/config";
+import { extendConfig, subtask, task, types } from "hardhat/config";
 import { HardhatPluginError } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { tsGenerator } from "ts-generator";
 import { TypeChain } from "typechain/dist/TypeChain";
 
-import { TypechainConfig } from "./types";
 // This import is needed to let the TypeScript compiler know that it should include your type
 // extensions in your npm package's types file.
 import "./type-extensions";
+import { TypechainConfig } from "./types";
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
