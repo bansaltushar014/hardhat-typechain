@@ -27,4 +27,18 @@ describe("Integration tests examples", function () {
       }
     });
   });
+
+  describe("Intremental compilation", function () {
+    this.timeout(120_000);
+    useEnvironment("hardhat-project");
+
+    it("Doesn't regenerate unchanged contracts", async function () {
+      try {
+        await this.hre.run("compile");
+        assert.isTrue(true);
+      } catch (error) {
+        assert.fail(error.message);
+      }
+    });
+  });
 });

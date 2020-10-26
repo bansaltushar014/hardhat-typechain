@@ -2,6 +2,8 @@ import fsExtra from "fs-extra";
 import {
   TASK_CLEAN,
   TASK_COMPILE,
+  TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
+  TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
   TASK_TEST,
 } from "hardhat/builtin-tasks/task-names";
 import { extendConfig, task } from "hardhat/config";
@@ -51,10 +53,6 @@ task(
     );
   }
 
-  console.log(
-    `Creating Typechain artifacts in directory ${config.typechain.outDir} for target ${config.typechain.target}`
-  );
-
   const cwd = process.cwd();
   await tsGenerator(
     { cwd },
@@ -68,7 +66,9 @@ task(
     })
   );
 
-  console.log(`Successfully generated Typechain artifacts!`);
+  console.log(
+    `Created 0 ${config.typechain.target} typescript types in ${config.typechain.outDir} directory`
+  );
 });
 
 /**
