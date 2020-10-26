@@ -40,7 +40,7 @@
     "@types/rimraf": "^3.0.0",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
-    "ethers": "^4.0.48",
+    "ethers": "^5.0.19",
     "fs-extra": "^9.0.1",
     "hardhat": "^2.0.1",
     "mocha": "^7.2.0",

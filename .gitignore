@@ -62,4 +62,3 @@ typings/
 # test files
 test/hardhat-project/artifacts-dir/
 test/hardhat-project/cache/
-testdir/
