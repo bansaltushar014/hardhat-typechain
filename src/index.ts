@@ -88,11 +88,7 @@ task(
   await run(TASK_TYPECHAIN_INTERNAL, { sourceNames });
 });
 
-/**
- * Override the compile task if configured to
- * generate the types automatically after compile.
- *
- */
+/*
 task(TASK_COMPILE_SOLIDITY_LOG_COMPILATION_RESULT).setAction(
   async (args, { config, run }, runSuper) => {
     await runSuper(args);
@@ -106,6 +102,21 @@ task(TASK_COMPILE_SOLIDITY_LOG_COMPILATION_RESULT).setAction(
     }
   }
 );
+*/
+
+/**
+ * Override the compile task if configured to
+ * generate the types automatically after compile.
+ *
+ */
+task(TASK_COMPILE).setAction(async (args, { config, run }, runSuper) => {
+  await runSuper(args);
+
+  // generate types
+  if (config.typechain.runOnCompile) {
+    await run(TASK_TYPECHAIN);
+  }
+});
 
 /**
  * Override the clean task to cleanup types folder as well.
