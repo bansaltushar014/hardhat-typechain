@@ -10,11 +10,6 @@ const config: HardhatUserConfig = {
   paths: {
     artifacts: "artifacts-dir",
   },
-  typechain: {
-    outDir: "../../testdir",
-    target: "ethers-v5",
-    runOnCompile: true,
-  },
 };
 
 export default config;
