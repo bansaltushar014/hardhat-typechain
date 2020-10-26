@@ -4,9 +4,10 @@ import {
   TASK_COMPILE,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
   TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS,
+  TASK_COMPILE_SOLIDITY_LOG_COMPILATION_RESULT,
   TASK_TEST,
 } from "hardhat/builtin-tasks/task-names";
-import { extendConfig, task } from "hardhat/config";
+import { extendConfig, task, subtask, types } from "hardhat/config";
 import { HardhatPluginError } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { tsGenerator } from "ts-generator";
@@ -42,33 +43,49 @@ extendConfig(
   }
 );
 
-task(
-  "typechain",
-  "Generate Typechain typings for compiled contracts"
-).setAction(async ({ noCompile }, { config, run }) => {
-  const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
-  if (!typechainTargets.includes(config.typechain.target)) {
-    throw new HardhatPluginError(
-      "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
+const TASK_TYPECHAIN = "typechain";
+const TASK_TYPECHAIN_INTERNAL = "typechain:internal";
+
+subtask(TASK_TYPECHAIN_INTERNAL)
+  .addParam("sourceNames", undefined, undefined, types.any)
+  .setAction(async ({ sourceNames }, { config, run }) => {
+    const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
+    if (!typechainTargets.includes(config.typechain.target)) {
+      throw new HardhatPluginError(
+        "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
+      );
+    }
+
+    const count = sourceNames.length;
+    const glob = `{${sourceNames.join(",")}}`;
+    const cwd = process.cwd();
+
+    await tsGenerator(
+      { cwd },
+      new TypeChain({
+        cwd,
+        rawConfig: {
+          files: `${config.paths.artifacts}/${glob}/+([a-zA-Z0-9]).json`,
+          outDir: config.typechain.outDir,
+          target: config.typechain.target,
+        },
+      })
     );
-  }
 
-  const cwd = process.cwd();
-  await tsGenerator(
-    { cwd },
-    new TypeChain({
-      cwd,
-      rawConfig: {
-        files: `${config.paths.artifacts}/!(build-info)/**/+([a-zA-Z0-9]).json`,
-        outDir: config.typechain.outDir,
-        target: config.typechain.target as string,
-      },
-    })
-  );
+    console.log(
+      `Generated ${count} typescript types in the ${config.typechain.outDir} directory`
+    );
+  });
 
-  console.log(
-    `Created 0 ${config.typechain.target} typescript types in ${config.typechain.outDir} directory`
-  );
+task(
+  TASK_TYPECHAIN,
+  "Generate Typechain typings for compiled contracts"
+).setAction(async (args, { config, run }) => {
+  const sourcePaths = await run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
+  const sourceNames = await run(TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES, {
+    sourcePaths,
+  });
+  await run(TASK_TYPECHAIN_INTERNAL, { sourceNames });
 });
 
 /**
@@ -76,16 +93,19 @@ task(
  * generate the types automatically after compile.
  *
  */
-task(
-  TASK_COMPILE,
-  "Compiles the entire project, building all artifacts"
-).setAction(async (args, { config, run }, runSuper) => {
-  await runSuper(args); // default compile
+task(TASK_COMPILE_SOLIDITY_LOG_COMPILATION_RESULT).setAction(
+  async (args, { config, run }, runSuper) => {
+    await runSuper(args);
 
-  if (config.typechain.runOnCompile) {
-    await run("typechain"); // generate types
+    // generate types
+    if (config.typechain.runOnCompile && args.compilationJobs.length > 0) {
+      const sourceNames = Array.from(
+        args.compilationJobs[0]._filesToCompile.keys()
+      );
+      await run(TASK_TYPECHAIN_INTERNAL, { sourceNames });
+    }
   }
-});
+);
 
 /**
  * Override the clean task to cleanup types folder as well.

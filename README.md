@@ -2,6 +2,8 @@
 
 # hardhat-typechain
 
+_Incremental Generation!_
+
 _Better integration with hardhat builtin tasks!_
 
 Add [Typechain](https://www.github.com/ethereum-ts/TypeChain) tasks to your hardhat project!
