@@ -44,48 +44,34 @@ extendConfig(
 );
 
 const TASK_TYPECHAIN = "typechain";
-const TASK_TYPECHAIN_INTERNAL = "typechain:internal";
-
-subtask(TASK_TYPECHAIN_INTERNAL)
-  .addParam("sourceNames", undefined, undefined, types.any)
-  .setAction(async ({ sourceNames }, { config, run }) => {
-    const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
-    if (!typechainTargets.includes(config.typechain.target)) {
-      throw new HardhatPluginError(
-        "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
-      );
-    }
-
-    const count = sourceNames.length;
-    const glob = `{${sourceNames.join(",")}}`;
-    const cwd = process.cwd();
-
-    await tsGenerator(
-      { cwd },
-      new TypeChain({
-        cwd,
-        rawConfig: {
-          files: `${config.paths.artifacts}/${glob}/+([a-zA-Z0-9]).json`,
-          outDir: config.typechain.outDir,
-          target: config.typechain.target,
-        },
-      })
-    );
-
-    console.log(
-      `Generated ${count} typescript types in the ${config.typechain.outDir} directory`
-    );
-  });
 
 task(
   TASK_TYPECHAIN,
   "Generate Typechain typings for compiled contracts"
 ).setAction(async (args, { config, run }) => {
-  const sourcePaths = await run(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS);
-  const sourceNames = await run(TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES, {
-    sourcePaths,
-  });
-  await run(TASK_TYPECHAIN_INTERNAL, { sourceNames });
+  const typechainTargets = ["truffle-v5", "web3-v1", "ethers-v5"];
+  if (!typechainTargets.includes(config.typechain.target)) {
+    throw new HardhatPluginError(
+      "Invalid Typechain target, please provide via hardhat.config.js (typechain.target)"
+    );
+  }
+
+  const cwd = process.cwd();
+  await tsGenerator(
+    { cwd },
+    new TypeChain({
+      cwd,
+      rawConfig: {
+        files: `${config.paths.artifacts}/!(build-info)/**/+([a-zA-Z0-9]).json`,
+        outDir: config.typechain.outDir,
+        target: config.typechain.target,
+      },
+    })
+  );
+
+  console.log(
+    `Generated typescript types in the ${config.typechain.outDir} directory`
+  );
 });
 
 /*
